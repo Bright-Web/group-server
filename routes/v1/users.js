@@ -5,16 +5,16 @@ const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const Project = mongoose.model('Project')
 
-// router.param('user', function (req, res, next, id) {
-//     User.findById(id)
-//         .then(function (user) {
-//             if (!User) {
-//                 return res.sendStatus(404)
-//             }
-//             req.user = user
-//             return next()
-//         })
-// })
+router.param('user', function (req, res, next, id) {
+    User.findById(id)
+        .then(function (user) {
+            if (!User) {
+                return res.sendStatus(404)
+            }
+            req.user = user
+            return next()
+        })
+})
 
 // Get all users
 // http://localhost:3000/v1/users/
@@ -30,6 +30,43 @@ router.get('/', function (req, res, next) {
             })
         })
 })
+
+// Get an user by id
+router.get('/:user', async function (req, res, next) {
+    console.log('***** User by id *****')
+    // await req.user.populate('project').execPopulate()
+    return res.json({ user: req.user.toJSON() })
+})
+
+/***********
+*** AUTH ***
+***********/
+
+// Login
+// POST /v1/users/login
+
+router.post('/login', async function (req, res, next) {
+    if (!req.body.email) {
+        return res.status(422).json({
+            success: false,
+            message: "Email cant be blank"
+        })
+    }
+
+    let user = await User.findOne({ email: req.body.email })
+    if (!user) {
+        return res.status(422).json({
+            success: false,
+            message: "User not found"
+        })
+    }
+    return res.json({ user: user.toJSON() })
+
+})
+
+
+
+
 // // Get an user by id
 // router.get('/:user', async function (req, res, next) {
 //     console.log('***** User by id *****')
