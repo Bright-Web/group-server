@@ -18,6 +18,7 @@ ProjectSchema.methods.toJSON = function ()  {
         id: this.id,
         title: this.title,
         slogan: this.slogan,
+        body: this.body,
         url: this.url,
         desktopImageUrl: this.desktopImageUrl,
         mobileImageUrl: this.mobileImageUrl,
