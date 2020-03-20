@@ -80,19 +80,23 @@ router.post('/login', async function (req, res, next) {
 // //     await user.save()
 // //     return res.json({ user: user.toJSON() })
 // // })
-// // Update a user
-// router.put('/:user', async function (req, res, next) {
-//     console.log('***** User Updated *****')
-//     let updatedUser = _.extend(req.user, req.body)
-//     await updatedUser.save({ user: updatedUser.toJSON() })
-//     return res.json(updatedUser)
-// })
-// // delete a user
-// router.delete('/:user', async function (req, res, next) {
-//     console.log('***** User Deleted *****')
-//     await User.findByIdAndRemove(req.user.id)
-//     return res.sendStatus(204);
-// })
+
+// Update a user
+router.put('/:user', async function (req, res, next) {
+    console.log('***** User Updated *****', req.body);
+    let updateduser = _.extend(req.user, req.body);
+    await updateduser.save();
+    return res.json({ user: updateduser.toJSON() });
+    // await updatedUser.save({ user: updatedUser.toJSON() });
+    // return res.json(updatedUser);
+});
+
+// delete a user
+router.delete('/:user', async function (req, res, next) {
+    console.log('***** User Deleted *****')
+    await User.findByIdAndRemove(req.user.id)
+    return res.sendStatus(204);
+})
 
 
 
@@ -197,25 +201,25 @@ router.post('/login', async function (req, res, next) {
 // Registering a new user
 // http://localhost:3000/v1/users/register/
 router.post('/register', async function (req, res, next) {
-  if (!req.body.email) {
-      return res.status(422).json({
-          success: false, message: 'Email cannot be blank'
-      });
-  }
-  if (!req.body.firstName) {
-      return res.status(422).json({
-          success: false, message: 'First name cannot be blank'
-      });
-  }
-  let existingUser = await User.findOne({ email: req.body.email });
-  if (existingUser) {
-      return res.status(422).json({
-          success: false, message: 'User already exists'
-      });
-  }
-  let user = new User(req.body);
-  await user.save();
-  return res.json({ user: user.toJSON() });
+    if (!req.body.email) {
+        return res.status(422).json({
+            success: false, message: 'Email cannot be blank'
+        });
+    }
+    if (!req.body.firstName) {
+        return res.status(422).json({
+            success: false, message: 'First name cannot be blank'
+        });
+    }
+    let existingUser = await User.findOne({ email: req.body.email });
+    if (existingUser) {
+        return res.status(422).json({
+            success: false, message: 'User already exists'
+        });
+    }
+    let user = new User(req.body);
+    await user.save();
+    return res.json({ user: user.toJSON() });
 });
 
 module.exports = router;

@@ -103,22 +103,22 @@ module.exports = router
 // })
 
 
-// // Create an article
-// router.post('/', async function (req, res, next) {
-//     let email = req.body.email
-//     let user = await User.findOne({ email: email })
-//     if(!user){
-//         return res.status(422).json({
-//             success: false, message: "User does not exist"
-//         })
-//     }
-//     let article = new Article(req.body)
-//     article.author = user
-//     await article.save()
-//     user.articles.push(article)
-//     await user.save()
-//     return res.json({ article: article.toJSON() })
-// })
+// Create an article
+router.post('/', async function (req, res, next) {
+    let email = req.body.email
+    let user = await User.findOne({ email: email })
+    if (!user) {
+        return res.status(422).json({
+            success: false, message: "User does not exist"
+        })
+    }
+    let project = new Project(req.body)
+    project.author = user
+    await project.save()
+    user.projects.push(project)
+    await user.save()
+    return res.json({ project: project.toJSON() })
+})
 
 
 // // Update an article

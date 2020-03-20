@@ -2,28 +2,30 @@ const mongoose = require('mongoose')
 
 const ProjectSchema = new mongoose.Schema({
     title: String,
-    slogan: String,
     body: String,
-    url: String,
+    slogan: String,
     desktopImageUrl: String,
+    tabletImageUrl: String,
     mobileImageUrl: String,
-    // author: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'User'
-    // }
+    websiteUrl: String,
+    moreInfo: String,
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
 }, { timestamps: true })
 
-ProjectSchema.methods.toJSON = function ()  {
+ProjectSchema.methods.toJSON = function () {
     return {
         id: this.id,
         title: this.title,
         slogan: this.slogan,
-        url: this.url,
         desktopImageUrl: this.desktopImageUrl,
+        tabletImageUrl: this.tabletImageUrl,
         mobileImageUrl: this.mobileImageUrl,
+        websiteUrl: this.websiteUrl,
         createdAt: this.createdAt,
         updatedAt: this.updatedAt
-        // author: this.author.toJSON()
     }
 }
 
